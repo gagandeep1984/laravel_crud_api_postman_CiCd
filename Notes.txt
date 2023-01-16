@@ -1,0 +1,80 @@
+Laravel :
+    * Components :
+        Routing         // use Illuminate\Support\Facades\Route
+        Middleware      // php artisan make:middleware <middleware-name>
+        Controller      // php artisan make:controller <controller-name>    [ --resource ]
+        Model           // php artisan make:model <model-name>
+        Migration       // php artisan make:migration <migration-name>
+        Request         // use Illuminate\Http\Request
+        Response        // use Illuminate\Http\Response
+        Views 
+        Validation      // use Illuminate\Support\Facades\Validator
+        Error Handling 
+        Logging 
+
+        Query Builder 
+        Traits              // collection of resuable methods accessible in multiple classes
+        Blade Components 
+
+    * Packages : 
+        Laravel/framework 
+        Laravel/sanctum     ( Authentication : token or jwt based ? )
+        Laravel/Mix         ( webpack.mix.js )
+        Laravel/Livewire 
+
+        CLI based : 
+            Laravel/Tinker  ( REPL for PHP Laravel )
+            Laravel/Sail    ( docker based production-grade environment )
+    *  
+
+1. Routes :
+    namespace : use Illuminate\Support\Facades\Route;
+    Routes Files : 
+            routes\
+                - web.php   
+                - api.php 
+
+            Pattern : 
+                - Route::<http-verb> ($uri, $callback)
+                - Route::[ match / any /  redirect / permanentRedirect / view / pattern ] 
+            Ex : Route::get('/user', [UserController::class, 'index'])
+
+            Artisan : 
+                - php artisan 
+                        route:list [ -v | --path=<search-keyword> | --except-vendor | --only-vendor ]
+                        route:clear 
+                        route:cache 
+
+            Parameters : 
+                Required - /user/{id}
+                Optional - /user/{name?}
+
+2. Middleware 
+    - before Middleware 
+        class BeforeMiddleware {
+            public function handle($request , Closure $next){
+                ... logic 
+                return $next($request);
+            }
+        }
+
+    - after Middleware 
+        class AfterMiddleware {
+            public function handle($request, Closure $next){
+                $response = $next($request);
+                .... logic .. 
+                return $response;
+            }
+        }
+
+    - terminateMiddleware 
+        public function terminate($request, $response) {
+            ... handles tasks after the response has been sent to the client 
+        }
+
+3. Controller 
+    Types : 
+        1. Base Controller      Route::get(uri, [class, method]);
+        2. Resource Controller  Route::resource(uri, class);        // index(GET), create(GET), store(POST), show(GET), edit(GET), update(PUT/PATCH), destroy(DELETE) 
+        3. Implicit Controller  Route::controller(uri, class)
+        4. Dependency Injection way via Constructor and Method Injections 
