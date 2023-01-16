@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Validator;
 class StudentController extends Controller
 {
 
-    private $students = array();
-
     /**
      * provides default listing of students
      */
@@ -81,19 +79,48 @@ class StudentController extends Controller
             $student->phone = $request->phone;
             $isSaved = $student->save();
 
-            // print("Saved  : " . $isSaved);
-
-            // print_r($request);
-            // array_push($this->students, $request->all());
             // {
             //     "status": 200,
             //     "message": "Gagandeep Singh has been added"
             // }
-
             return response()->json([
                 'status' => 200,
                 'message' => $isSaved ? $student->name . ' has been added' : "There was some problem in saving student information"
             ], 200);
         }
+    }
+
+    /**
+     * Update the existing record for a Matching ID for new updated values .. 
+     */
+    public function update(Request $request, $id)
+    {
+        $student = Student::find($id);
+
+        if ($student == null) {
+            return response()->json([
+                "status" => 404,
+                "message" => "ID " . $id . " not found"
+            ]);
+        } else {
+            $student->name = $request->name;
+            $student->course = $request->course;
+            $student->email = $request->email;
+            $student->phone = $request->phone;
+
+            $hasUpdated = $student->update();
+
+            return response()->json([
+                "status" => $hasUpdated ? 200 : 500,
+                $hasUpdated ? "student" : "message" => $hasUpdated ? $student : "Some Interval problem occured while communicating database.. "
+            ]);
+        }
+    }
+    /**
+     * Deleting record matching any particular ID 
+     */
+    public function destroy($id)
+    {
+        // $result = Student::
     }
 }

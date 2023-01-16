@@ -89,10 +89,11 @@ Eloquent ORM
 Student::
         all()                           // all fields 
         select('<field>', ... )->get() // selected fields 
+        find($id)                       // finds any specific record matching the ID provided 
 
 Model Instance
     $student = new Student;
     $student->name = "someone";
     $Student->
-            .save()
-
+            .save()     // to save the FILLED object with property values 
+            .update()   // to update the CHANGED object with property values 
