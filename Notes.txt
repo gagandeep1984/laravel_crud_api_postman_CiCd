@@ -75,6 +75,24 @@ Laravel :
 3. Controller 
     Types : 
         1. Base Controller      Route::get(uri, [class, method]);
-        2. Resource Controller  Route::resource(uri, class);        // index(GET), create(GET), store(POST), show(GET), edit(GET), update(PUT/PATCH), destroy(DELETE) 
+        2. Resource Controller  Route::resource(uri, class);        
+                // Methods => index(GET), create(GET), store(POST), show(GET), edit(GET), update(PUT/PATCH), destroy(DELETE) 
         3. Implicit Controller  Route::controller(uri, class)
         4. Dependency Injection way via Constructor and Method Injections 
+
+4. Model 
+
+-- * -- * -- * -- * -- * -- * 
+Eloquent ORM
+
+// statically available .. 
+Student::
+        all()                           // all fields 
+        select('<field>', ... )->get() // selected fields 
+
+Model Instance
+    $student = new Student;
+    $student->name = "someone";
+    $Student->
+            .save()
+
