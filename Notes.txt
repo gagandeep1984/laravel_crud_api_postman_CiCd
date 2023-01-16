@@ -97,3 +97,4 @@ Model Instance
     $Student->
             .save()     // to save the FILLED object with property values 
             .update()   // to update the CHANGED object with property values 
+            .delete()   // deletes the specific record
