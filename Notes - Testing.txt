@@ -1,0 +1,71 @@
+Misc : 
+    - Laravel Dusk for Browser Testing 
+    - Reporting tools : TestDox 
+
+Tools : PHPUnit / PEST / 
+
+Laravel Test types : 
+		Feature test    - Testing small features, api calls, assert response with fake / duplicated database for workflow testing to some extent
+		Unit test       - Testing class models, controllers. services etc... or business logic in codebase for Modularity / Integrity 
+
+root files : phpunit.xml , .env.testing 
+
+phpunit.xml
+    <php>
+        <server / env name="APP_ENV"          value="testing"  />
+        <server / env name="DB_CONNECTION"    value="sqlite"   />
+        <server / env name="DB_DATABASE"      value=":memory:" />
+    </php>
+
+php artisan make:test <test-name> // extends TestCase - creates /test/Feature Test with no option involved 
+            [ --unit ]	// creates Unit test case /test/Unit 
+            [ --pest ]  // creates PEST test using test() and it() functions 
+
+DB_CONNECTION=sqlite
+DB_DATABASE=database/test.sqlite
+
+php artisan test 		//  executes all tests of types Feature and Unit tests both 		./vendor/bin/phpunit 
+ PASS  Tests\Unit\ExampleTest
+ PASS  Tests\Feature\ExampleTest
+
+=> PHPUnit 
+----------
+    Ref : 
+        https://laravel-news.com/how-to-start-testing
+        https://www.twilio.com/blog/unit-test-laravel-api-pest-framework
+        https://blog.pusher.com/tests-laravel-applications/
+        https://github.com/fisayoafolayan/e-commerce-laravel-vue/blob/master/tests/Unit/OrderTest.php
+        
+    - uses either 
+        - "@test" 
+        - function name prefixed with "test_<function_name>()" 
+
+    Methods :
+        - assert [ True / False / Equal / Null / Contains / Count / Empty / see ] 
+        - assert [ Status / Json / JsonStructure ]
+	
+
+
+=> PEST 
+-------
+Installing : 
+    composer require --dev pestphp/pest 
+    composer require --dev pestphp/pest-plugin-laravel  // install PEST laravel plugin 
+    php artisan pest:install 
+
+
+Methods : 
+    it('<description>', handler)
+    test('<description>')-> <actions-methods>(args, .. );
+
+execution : ./vendor/bin/pest           // runs all 
+                [ --filter TodoTest ]   // runs a single test file 
+
+example : 
+it('can create a todo task' , function() {
+
+})
+it('has welcome page')->get("/")->assertStatus(200);
+
+test('basic')->assertTrue(true);
+

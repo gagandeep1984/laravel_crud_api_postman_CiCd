@@ -4,6 +4,9 @@ namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Unit Test 
+ */
 class ExampleTest extends TestCase
 {
     /**

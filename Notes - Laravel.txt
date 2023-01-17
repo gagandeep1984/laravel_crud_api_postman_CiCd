@@ -10,11 +10,16 @@ Laravel :
         Views 
         Validation      // use Illuminate\Support\Facades\Validator
         Error Handling 
-        Logging 
+        Logging
+
+        Testing with Fake Data:
+            - Seeder          // manual chunk of data is managed 
+            - Factory         // large vols of automated data produced using Model class 
 
         Query Builder 
         Traits              // collection of resuable methods accessible in multiple classes
         Blade Components 
+        Testing            // tools : PHPUnit / PEST 
 
     * Packages : 
         Laravel/framework 
@@ -98,3 +103,60 @@ Model Instance
             .save()     // to save the FILLED object with property values 
             .update()   // to update the CHANGED object with property values 
             .delete()   // deletes the specific record
+
+Seeder vs Factory ( philosphically explained )
+    - Both used for generating fake data to test the application. 
+    - Factory class can use Model to generate fake data ie. /App/Models/User::class 
+    - Seeder has to be with manual data ( no usage of Model class but Table name i.e. DB:table('user') )
+
+    Refs:
+        - https://stackoverflow.com/questions/43759929/what-is-the-difference-between-model-factory-and-a-db-seeder-in-laravel
+        - https://www.scratchcode.io/difference-between-factory-and-seeders-in-laravel/
+        - https://5balloons.info/laravel-database-seeding-with-model-factories/
+
+5. Seeder 
+    Purpose :
+        - fill up fake data in testing database using Model class 
+        - DatabaseSeeder runs the newly written seeder class via its run() method 
+        - Manual data is mentioned to work with . 
+
+    php artisan make:seeder UserSeeder  // creates within /database/seeds/UserSeeder.php 
+    php artisan db:seed     // performs data seeding operation based on the classes extending Seeder below 
+
+    class UserSeeder extends Seeder {
+        public function run(){
+            DB:table('users)->insert( [...], ...);
+        }
+    }
+
+    class DatabaseSeeder extends Seeder {
+        public function run () {
+            $this->call(UserSeeder::class);
+        }
+    }
+
+6. Factory 
+    Purpose : 
+        - Allows programmatic generation of data using libraries and Model to pill up testing database with fake data  
+        - Faker library is used to generate fake data whereever possible i.e. text, sentence , body .. 
+        
+        php artisan make:factory PostFactory    // location : /database/factories/PostFactory.php 
+        php artisan db:seed
+
+        use Faker\Generator as Faker 
+        $factory->define(Post::class, function(Faker $faker){
+            return [
+                'title' => $faker->sentence(5),... 
+            ]
+        });
+
+        or 
+        factory(App\Models\Post::class, 10)->create()->each( function ($post) {
+            $post->comments()->save(factory(App\Models\Comment::class)->make());
+        })
+
+        class DatabaseSeeder extends Seeder {
+            public function run(){
+                factory(Post::class, 2)->create();
+            }
+        }
